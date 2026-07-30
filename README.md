@@ -14,3 +14,8 @@ Execute:
 cmake -S . -B build
 cmake --build build -v
 ```
+
+Running tests:
+```bash
+ctest --test-dir build --output-on-failure
+```
