@@ -32,3 +32,14 @@ repos:
     rev: v0.6.13
     hooks:
       - id: cmake-format
+
+  - repo: https://github.com/cpplint/cpplint
+    rev: 1.6.1
+    hooks:
+      - id: cpplint
+        args:
+          - "--quiet"
+          - "--verbose=2"
+        types_or:
+          - c++
+        files: ^cpp/
