@@ -12,22 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#pragma once
+#include "toyarrow/buffer.h"
+#include <gtest/gtest.h>
 
-#include <cstdint>
-#include <memory>
+TEST(BufferTest, ConstructorAndAccessors) {
+    std::vector<int64_t> sizes = {0, 1, 5, 8, 1024, 2047, 4096};
+    for (int64_t size : sizes) {
+        toyarrow::Buffer buffer(size);
 
-namespace toyarrow {
-class Buffer {
-    public:
-        explicit Buffer(int64_t size);
-
-        const uint8_t* data() const;
-
-        int64_t size() const;
-    private:
-        uint8_t* m_data;
-        int64_t m_size;
-        std::shared_ptr<void> owner_;
-};
-}  // namespace toyarrow
+        EXPECT_EQ(buffer.size(), size);
+        // Check for 64-byte alignment, address should be divisible by 64
+        EXPECT_EQ(reinterpret_cast<uintptr_t>(buffer.data()) % 64, 0);
+        EXPECT_NE(buffer.data(), nullptr);
+    }
+}

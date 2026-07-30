@@ -16,6 +16,8 @@ cmake_minimum_required(VERSION 3.25)
 
 project(ToyArrow)
 
+option(TOYARROW_BUILD_TESTS "Build the tests" ON)
+
 # Default to a debug build if no build type was specified
 # as this is currently a project to learn C++ and Arrow.
 if(NOT CMAKE_BUILD_TYPE)
@@ -40,3 +42,21 @@ target_sources(ToyArrow
     FILES
       cpp/src/toyarrow/buffer.h
 )
+
+if(TOYARROW_BUILD_TESTS)
+    # Add GoogleTest
+    include(FetchContent)
+    include(GoogleTest)
+
+    FetchContent_Declare(googletest
+    GIT_REPOSITORY https://github.com/google/googletest.git
+    GIT_TAG        v1.17.0
+    )
+
+    FetchContent_MakeAvailable(googletest)
+    enable_testing()
+
+    add_executable(buffer_test cpp/src/toyarrow/buffer_test.cc)
+    target_link_libraries(buffer_test PRIVATE ToyArrow gtest_main)
+    gtest_discover_tests(buffer_test)
+endif()
