@@ -34,8 +34,14 @@ target_compile_features(ToyArrow PUBLIC cxx_std_23)
 
 target_sources(
   ToyArrow
-  PRIVATE cpp/src/toyarrow/buffer.cc
-  PUBLIC FILE_SET HEADERS BASE_DIRS cpp/src FILES cpp/src/toyarrow/buffer.h)
+  PRIVATE cpp/src/toyarrow/buffer.cc cpp/src/toyarrow/bitmap.cc
+  PUBLIC FILE_SET
+         HEADERS
+         BASE_DIRS
+         cpp/src
+         FILES
+         cpp/src/toyarrow/buffer.h
+         cpp/src/toyarrow/bitmap.h)
 
 if(TOYARROW_BUILD_TESTS)
   # Add GoogleTest
@@ -53,4 +59,8 @@ if(TOYARROW_BUILD_TESTS)
   add_executable(buffer_test cpp/src/toyarrow/buffer_test.cc)
   target_link_libraries(buffer_test PRIVATE ToyArrow gtest_main)
   gtest_discover_tests(buffer_test)
+
+  add_executable(bitmap_test cpp/src/toyarrow/bitmap_test.cc)
+  target_link_libraries(bitmap_test PRIVATE ToyArrow gtest_main)
+  gtest_discover_tests(bitmap_test)
 endif()
